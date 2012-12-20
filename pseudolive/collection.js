@@ -8,6 +8,6 @@ define([
 
   return Backbone.Tastypie.Collection.extend({
     'model': Model,
-    'urlRoot': require.appConfig.videotagApiUrl + '/pseudolive'
+    'urlRoot': require.appConfig.videotagApiUrl + '/pseudolive/'
   });
 });
