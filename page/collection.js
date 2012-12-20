@@ -1,6 +1,14 @@
-define(['backbone'], function (Backbone) {
-  return Backbone.Collection.extend({
-    'urlRoot': require.appConfig.apiUrl + '/page'
+/*global define*/
+
+define([
+  'backbone',
+  './model'
+], function (Backbone, Model) {
+  'use strict';
+
+  return Backbone.Tastypie.Collection.extend({
+    'model': Model,
+    'url': require.appConfig.poserApiUrl + '/page'
   });
 });
 

@@ -1,5 +1,13 @@
-define(['backbone'], function (Backbone) {
-  return Backbone.Collection.extend({
-    'urlRoot': require.appConfig.apiUrl + '/pseudolive'
+/*global define*/
+
+define([
+  'backbone',
+  './model'
+], function (Backbone, Model) {
+  'use strict';
+
+  return Backbone.Tastypie.Collection.extend({
+    'model': Model,
+    'urlRoot': require.appConfig.videotagApiUrl + '/pseudolive'
   });
 });

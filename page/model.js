@@ -1,5 +1,9 @@
+/*global define*/
+
 define(['backbone'], function (Backbone) {
-  return Backbone.Model.extend({
-    'urlRoot': require.appConfig.apiUrl + '/page'
+  'use strict';
+
+  return Backbone.Tastypie.Model.extend({
+    'urlRoot': require.appConfig.poserApiUrl + '/page'
   });
 });
