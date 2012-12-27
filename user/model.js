@@ -4,6 +4,6 @@ define(['backbone'], function (Backbone) {
   'use strict';
 
   return Backbone.Tastypie.Model.extend({
-    'urlRoot': require.appConfig.poserApiUrl + '/user/'
+    'urlRoot': require.appConfig.poserApiUrl + 'user/'
   });
 });
