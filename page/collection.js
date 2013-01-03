@@ -8,7 +8,7 @@ define([
 
   return Backbone.Tastypie.Collection.extend({
     'model': Model,
-    'url': require.appConfig.poserApiUrl + '/page/'
+    'urlRoot': require.appConfig.poserApiUrl + '/page/'
   });
 });
 
