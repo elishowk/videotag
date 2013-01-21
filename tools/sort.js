@@ -10,7 +10,7 @@ define({
                 }
             }
             if (typeof msg.metadata.like == 'number') {
-                points[msg.created_by] += msg.metadata.like;
+                points[msg.created_by][0] += msg.metadata.like;
             }
             return points;
         }, {});
