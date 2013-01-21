@@ -1,21 +1,21 @@
 define({
-    'global': function(messages) {
-        var users = _.reduce(messages, function(points, msg, index) {
+    'sort': function(messages) {
+        var users = _.map(_.reduce(messages, function(points, msg, index) {
+            var pt = (new Date(msg.created_at)).valueOf();
             if (points[msg.created_by] === undefined) {
-                points[msg.created_by] = [1, msg.created_at];
+                points[msg.created_by] = pt;
             } else {
-                points[msg.created_by][0] += 1;
-                if (points[msg.created_by][1] < msg.created_at) {
-                    points[msg.created_by][1] = msg.created_at;
-                }
+                points[msg.created_by] += pt;
             }
             if (typeof msg.metadata.like == 'number') {
-                points[msg.created_by][0] += msg.metadata.like;
+                points[msg.created_by] += msg.metadata.like * pt;
             }
             return points;
-        }, {});
-        return _.sortBy(users, function(scores) {
-            return scores[0] + scores[1];
+        }, {}), function(point, index){
+            return { uid: index, point: point};
         });
+        return _.pluck(_.sortBy(users, function(score, uid) {
+            return -score.point;
+        }), 'uid');
     }
 });
