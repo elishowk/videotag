@@ -1,17 +1,29 @@
 define({
-    'sort': function(messages) {
+    'by_relative_createdAt_likes': function(messages) {
+        var sortedCreatedAt = _.uniq(_.sort(messages, function(msg) {
+            return (new Date(msg.get('created_at'))).valueOf();
+        }), true);
+        var maxRef = _.max(messages, function(msg) {
+            return int(msg.get('reference'));
+        });
+        var sortedReferences = _.uniq(_.sort(messages, function(msg) {
+            return -(maxRef - int(msg.get('reference')));
+        }), true);
         var users = _.map(_.reduce(messages, function(points, msg, index) {
-            var pt = (new Date(msg.created_at)).valueOf();
-            if (points[msg.created_by] === undefined) {
-                points[msg.created_by] = pt;
-            } else {
-                points[msg.created_by] += pt;
+            var timestamp = (new Date(msg.get('created_at'))).valueOf();
+            var like = msg.get('like_count') || 1;
+            if (typeof like !== 'number') {
+                like = 1;
             }
-            if (typeof msg.metadata.like == 'number') {
-                points[msg.created_by] += msg.metadata.like * pt;
+            if (points[msg.get('created_by')] === undefined) {
+                points[msg.get('created_by')] = _.indexOf(sortedCreatedAt, timestamp) * like +
+                    _.indexOf(sortedReferences, msg.get('reference'));
+            } else {
+                points[msg.get('created_by')] += _.indexOf(sortedCreatedAt, timestamp) * like +
+                    _.indexOf(sortedReferences, msg.get('reference'));
             }
             return points;
-        }, {}), function(point, index){
+        }, {}), function(point, index) {
             return { uid: index, point: point};
         });
         return _.pluck(_.sortBy(users, function(score, uid) {
